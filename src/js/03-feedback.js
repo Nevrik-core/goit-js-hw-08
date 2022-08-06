@@ -4,13 +4,19 @@ const formEl = document.querySelector('.feedback-form');
 const textareaEl = document.querySelector('.feedback-form textarea');
 
 
-console.log(textareaEl);
+const formData = {};
 
 const STORAGE_KEY = 'feedback-form-state';
 
 formEl.addEventListener('submit', onFormSubmit);
 
 textareaEl.addEventListener('input', throttle(onTextareaInput, 500));
+
+
+formEl.addEventListener('input', e => {
+    formData[e.target.name] = e.target.value;
+    console.log(formData);
+})
 
 populateTextarea();
 
@@ -27,7 +33,7 @@ function onFormSubmit(e) {
 function onTextareaInput(e) {
     const message = e.target.value;
     console.log(message);
-    localStorage.setItem(STORAGE_KEY, message);
+    localStorage.setItem(STORAGE_KEY, JSON.stringify(formData));
 }
 
 
@@ -37,7 +43,7 @@ function populateTextarea() {
    
 
     if (savedMessage) {
-        console.log(savedMessage);
+        textareaEl.value = savedMessage;
        
     }
 }
